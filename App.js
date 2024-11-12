@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image, Dimensions } from 'react-native';
 import { Audio } from 'expo-av';
+import { StatusBar } from 'expo-status-bar';
+import PuzzleJohn from './PuzzleJohn';
 
 const Stack = createNativeStackNavigator();
 const {width, height} = Dimensions.get('window');
@@ -326,18 +328,21 @@ const ThreeONine = ({navigation}) => {
                 </Image>
                 
                 </TouchableOpacity>
+
                 <TouchableOpacity
                     onPress={() => {
-                        console.log("Navigating to ThreeONinePC"); // Debugging log
-                        navigation.navigate('ThreeONinePC');
+                        console.log("Navigating to John Puzzle"); // Debugging log
+                        navigation.navigate('PuzzleJohn');
             }}>
                 
                 <Image
-                source = {require('./assets/green_navigation_arrow.png')}
+                source = {require('./assets/john_ghost.png')}
                 style={[styles.arrow, {
-                    transform: [{ rotate: '110deg' }, {rotateX: '30deg'}, {rotateY: '30deg'}],
-                    top: height * .1,
-                    left: width * .35,
+                    transform: [{ rotate: '0deg' }, {rotateX: '0deg'}, {rotateY: '0deg'}],
+                    top: height * -.10,
+                    left: width * .31,
+                    width: width * 0.25,
+                    height: height * 0.25,
                 }]}>
                 </Image>
                 
@@ -360,6 +365,7 @@ const App = () => {
             <Stack.Screen name="ThreeThreeBack" component = {ThreeThreeBack}></Stack.Screen>
             <Stack.Screen name="ThreeBathroom" component = {ThreeBathroom}></Stack.Screen>
             <Stack.Screen name="ThreeONine" component = {ThreeONine}></Stack.Screen>
+            <Stack.Screen name="PuzzleJohn" component = {PuzzleJohn}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
     )
