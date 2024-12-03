@@ -1,0 +1,27 @@
+My own goals for this next lab:
+
+I want to find a way to create separate file based on the
+different floors/based on the different puzzles. This will
+make it easier to create the code and organize it
+
+I also want to create comments to describe what each
+picture/room actually represents
+
+I also want to make it easier for me to create the rooms/
+require less code. Right now it is really messy... I am
+basically building each one from scratch, when I really want
+to make my own custom component to use instead.
+
+I want to keep the main app with the elevator code, have
+the third floor as its own file, and have each puzzle as
+its own file (or group the puzzles on the same floor
+together)
+
+I also would like to experiment with making the buttons
+and arrows fit more consistently on people's screens... I
+am unsure if this will be a big issue or small issue, I will
+explore that first...
+
+I want to also take some pictures for more classrooms/
+hallways to make exploration more fun and leave more room
+for puzzles.

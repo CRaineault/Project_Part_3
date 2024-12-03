@@ -18,7 +18,7 @@ const Elevator = ({navigation}) => {
                     <TouchableOpacity style={styles.button_3r}
                     onPress={() => {
                     console.log("Navigating to Floor 3R"); // Debugging log
-                    navigation.navigate('ThreeOne');
+                    navigation.navigate('West_3R_Out');
         }}></TouchableOpacity>
         <TouchableOpacity style={styles.button_4}
                     ></TouchableOpacity>
@@ -28,10 +28,10 @@ const Elevator = ({navigation}) => {
     )
 }
 
-const ThreeOne = ({navigation}) => {
+const West_3R_Out = ({navigation}) => {
     return (
         <ImageBackground
-            source = {require('./assets/three_one.jpg')}
+            source = {require('./assets/navigation-images/West_3R_Out.jpg')}
             style = {styles.background}
             >
                 <TouchableOpacity
@@ -52,8 +52,8 @@ const ThreeOne = ({navigation}) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
-                        console.log("Navigating to ThreeTwo"); // Debugging log
-                        navigation.navigate('ThreeTwo');
+                        console.log("Navigating to TL_East"); // Debugging log
+                        navigation.navigate('TL_East');
             }}>
                 
                 <Image
@@ -70,16 +70,16 @@ const ThreeOne = ({navigation}) => {
     )
 }
 
-const ThreeTwo = ({navigation}) => {
+const TL_East = ({navigation}) => {
     return (
         <ImageBackground
-            source = {require('./assets/three_two.jpg')}
+            source = {require('./assets/navigation-images/TL_East.jpg')}
             style = {styles.background}
             >
                 <TouchableOpacity
                     onPress={() => {
-                        console.log("Navigating to ThreeOne"); // Debugging log
-                        navigation.navigate('ThreeOne');
+                        console.log("Navigating to West_3R_Out"); // Debugging log
+                        navigation.navigate('West_3R_Out');
             }}>
                 
                 <Image
@@ -96,42 +96,60 @@ const ThreeTwo = ({navigation}) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
-                        console.log("Navigating to ThreeThreeFront"); // Debugging log
-                        navigation.navigate('ThreeThreeFront');
+                        console.log("Navigating to TR_North"); // Debugging log
+                        navigation.navigate('TR_North');
             }}>
                 
                 <Image
                 source = {require('./assets/green_navigation_arrow.png')}
                 style={[styles.arrow, {
                     transform: [{ rotate: '90deg' }, { rotateY: '60deg'}],
-                    top: height * -.04,
-                    left: width * -.11,
+                    top: height * -.08,
+                    left: width * -.20,
+                    width: width * 0.05,
+                    height: height * 0.03,
                 }]}>
                 </Image>
                 
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => {
+                        console.log("Navigating to TL_TR_1"); // Debugging log
+                        navigation.navigate('TL_TR_1');
+            }}>
+                <Image
+                source = {require('./assets/green_navigation_arrow.png')}
+                style={[styles.arrow, {
+                    transform: [{ rotate: '0deg' }, { rotateX: '30deg'}],
+                    top: height * -.05,
+                    left: width * -.20,
+                    width: width * 0.05,
+                    height: height * 0.02,
+                }]}>
+                </Image>
                 </TouchableOpacity>
         </ImageBackground>
     )
 }
 
-const ThreeThreeFront = ({navigation}) => {
+const TL_TR_1 = ({navigation}) => {
     return (
         <ImageBackground
-            source = {require('./assets/Three_Three_Front.jpg')}
+            source = {require('./assets/navigation-images/TL_TR_1.jpg')}
             style = {styles.background}
             >
                 <TouchableOpacity
                     onPress={() => {
-                        console.log("Navigating to ThreeThreeBack"); // Debugging log
-                        navigation.navigate('ThreeThreeBack');
+                        console.log("Navigating to TR_North"); // Debugging log
+                        navigation.navigate('TR_North');
             }}>
                 
                 <Image
                 source = {require('./assets/green_navigation_arrow.png')}
                 style={[styles.arrow, {
-                    transform: [{ rotate: '270deg' }, { rotateY: '60deg'}],
+                    transform: [{ rotate: '180deg' }, { rotateX: '60deg'}],
                     top: height * 0.35,
-                    left: width * -.1,
+                    left: width * .2,
                     width: width * 0.2,
                     height: height * 0.1,
                 }]}>
@@ -148,16 +166,28 @@ const ThreeThreeFront = ({navigation}) => {
                 source = {require('./assets/green_navigation_arrow.png')}
                 style={[styles.arrow, {
                     transform: [{ rotate: '0deg' }, {rotateX: '60deg'}],
-                    top: height * .15,
+                    top: height * .1,
                     left: width * -.4,
+                }]}>
+                </Image>
+                
+                </TouchableOpacity>
+                <TouchableOpacity>
+                
+                <Image
+                source = {require('./assets/green_navigation_arrow.png')}
+                style={[styles.arrow, {
+                    transform: [{ rotate: '90deg' }, {rotateY: '60deg'}],
+                    top: height * -0.03,
+                    left: width * 0,
                 }]}>
                 </Image>
                 
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
-                        console.log("Navigating to ThreeTwo"); // Debugging log
-                        navigation.navigate('ThreeTwo');
+                        console.log("Navigating to TL_East"); // Debugging log
+                        navigation.navigate('TL_East');
             }}>
                 
                 <Image
@@ -177,44 +207,77 @@ const ThreeThreeFront = ({navigation}) => {
     )
 }
 
-const ThreeThreeBack = ({navigation}) => {
+const TR_North = ({navigation}) => {
     return (
         <ImageBackground
-            source = {require('./assets/Three_Three_Back.jpg')}
+            source = {require('./assets/navigation-images/TR_North.jpg')}
             style = {styles.background}
             >
-                <TouchableOpacity
-                    onPress={() => {
-                        console.log("Navigating to ThreeThreeFront"); // Debugging log
-                        navigation.navigate('ThreeThreeFront');
-            }}>
-                
+                <TouchableOpacity>
                 <Image
                 source = {require('./assets/green_navigation_arrow.png')}
                 style={[styles.arrow, {
-                    transform: [{ rotate: '270deg' }],
-                    top: height * 0.35,
-                    left: width * -.04,
+                    transform: [{ rotate: '180deg' }, { rotateX: '60deg'}],
+                    top: height * .06,
+                    left: width * .2,
+                    width: width * 0.1,
+                    height: height * 0.05,
                 }]}>
                 </Image>
                 
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
-                        console.log("Navigating to ThreeBathroom"); // Debugging log
-                        navigation.navigate('ThreeBathroom');
+                        console.log("Navigating to ThreeTen"); // Debugging log
+                        navigation.navigate('ThreeTen');
+            }}>
+                <Image
+                source = {require('./assets/green_navigation_arrow.png')}
+                style={[styles.arrow, {
+                    transform: [{ rotate: '90deg' }, { rotateY: '60deg'}],
+                    top: height * .06,
+                    left: width * 0,
+                    width: width * 0.1,
+                    height: height * 0.05,
+                }]}>
+                </Image>
+                
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => {
+                        console.log("Navigating to ThreeONine"); // Debugging log
+                        navigation.navigate('ThreeONine');
             }}>
                 
                 <Image
                 source = {require('./assets/green_navigation_arrow.png')}
                 style={[styles.arrow, {
-                    transform: [{ rotate: '180deg' }, {rotateX: '60deg'}],
-                    top: height * .05,
-                    left: width * .15,
+                    transform: [{ rotate: '0deg' }, {rotateX: '60deg'}],
+                    top: height * .07,
+                    left: width * -.35,
                 }]}>
                 </Image>
                 
                 </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => {
+                        console.log("Navigating to TL_TR_1"); // Debugging log
+                        navigation.navigate('TL_TR_1');
+            }}>
+                
+                <Image
+                source = {require('./assets/green_navigation_arrow.png')}
+                style={[styles.arrow, {
+                    transform: [{ rotate: '0deg' }, { rotateX: '60deg'}],
+                    top: height * .15,
+                    left: width * -.4,
+                    width: width * 0.2,
+                    height: height * 0.1,
+                }]}>
+                </Image>
+                
+                </TouchableOpacity>
+                
         </ImageBackground>
     )
 }
@@ -295,8 +358,8 @@ const ThreeONine = ({navigation}) => {
             >
                 <TouchableOpacity
                     onPress={() => {
-                        console.log("Navigating to ThreeThreeFront"); // Debugging log
-                        navigation.navigate('ThreeThreeFront');
+                        console.log("Navigating to TR_North"); // Debugging log
+                        navigation.navigate('TR_North');
             }}>
                 
                 <Image
@@ -351,6 +414,73 @@ const ThreeONine = ({navigation}) => {
     )
 }
 
+const ThreeTen = ({navigation}) => {
+    return (
+        <ImageBackground
+            source = {require('./assets/Three_Ten.jpg')}
+            style = {styles.background}
+            >
+                <TouchableOpacity
+                    onPress={() => {
+                        console.log("Navigating to TR_North"); // Debugging log
+                        navigation.navigate('TR_North');
+            }}>
+                
+                <Image
+                source = {require('./assets/green_navigation_arrow.png')}
+                style={[styles.arrow, {
+                    transform: [{ rotate: '270deg' }],
+                    top: height * 0.35,
+                    left: width * -.04,
+                }]}>
+                </Image>
+                
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                
+                <Image
+                source = {require('./assets/Rocket_J._Squirrel.png')}
+                style={[styles.arrow, {
+                    transform: [{ rotate: '0deg' }, {rotateX: '0deg'}, {rotateY: '0deg'}],
+                    top: height * -.13,
+                    left: width * .15,
+                    width: width * 0.15,
+                    height: height * 0.1,
+                }]}>
+                </Image>
+                
+                </TouchableOpacity>
+        </ImageBackground>
+    )
+}
+
+const ThreeONinePuzzle = ({navigation}) => {
+    return (
+        <ImageBackground
+            source = {require('./assets/309_TV_Puzzle.jpg')}
+            style = {styles.background}
+            >
+                <TouchableOpacity
+                    onPress={() => {
+                        console.log("Navigating to ThreeONine"); // Debugging log
+                        navigation.navigate('ThreeONine');
+            }}>
+                
+                <Image
+                source = {require('./assets/green_navigation_arrow.png')}
+                style={[styles.arrow, {
+                    transform: [{ rotate: '270deg' }],
+                    top: height * 0.35,
+                    left: width * -.04,
+                }]}>
+                </Image>
+                <Text>PUZZLE HERE</Text>
+                </TouchableOpacity>
+        </ImageBackground>
+    )
+}
+
 const App = () => {
     return(
         <NavigationContainer>
@@ -359,12 +489,14 @@ const App = () => {
         screenOptions={{headerShown: false}}
       >
             <Stack.Screen name="Elevator" component = {Elevator}></Stack.Screen>
-            <Stack.Screen name="ThreeOne" component = {ThreeOne}></Stack.Screen>
-            <Stack.Screen name="ThreeTwo" component = {ThreeTwo}></Stack.Screen>
-            <Stack.Screen name="ThreeThreeFront" component = {ThreeThreeFront}></Stack.Screen>
-            <Stack.Screen name="ThreeThreeBack" component = {ThreeThreeBack}></Stack.Screen>
+            <Stack.Screen name="West_3R_Out" component = {West_3R_Out}></Stack.Screen>
+            <Stack.Screen name="TL_TR_1" component = {TL_TR_1}></Stack.Screen>
+            <Stack.Screen name="TL_East" component = {TL_East}></Stack.Screen>
+            <Stack.Screen name="TR_North" component = {TR_North}></Stack.Screen>
             <Stack.Screen name="ThreeBathroom" component = {ThreeBathroom}></Stack.Screen>
             <Stack.Screen name="ThreeONine" component = {ThreeONine}></Stack.Screen>
+            <Stack.Screen name="ThreeONinePuzzle" component = {ThreeONinePuzzle}></Stack.Screen>
+            <Stack.Screen name="ThreeTen" component = {ThreeTen}></Stack.Screen>
             <Stack.Screen name="PuzzleJohn" component = {PuzzleJohn}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>

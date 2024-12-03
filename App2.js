@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Image, ImageBackground, TouchableOpacity, Button, PanResponder, Dimensions } from 'react-native';
-import ThreeONine from './App'
+import ThreeONine from './App2'
 
-export default function PuzzleJohn() {
+export default function App() {
   const [pieceVisible, setPieceVisible] = useState(true);
   const [puzzleComplete,setPuzzleComplete] = useState(false);
   const [showCompletion, setCompletionPic] = useState(false);
@@ -106,7 +106,7 @@ export default function PuzzleJohn() {
     >
       <View style={styles.innerContainer}>
         {pieceVisible &&  !arrow && (
-          <TouchableOpacity onPress={test}>
+          <TouchableOpacity onPress={ThreeONine}>
             <Image 
               source={require('./assets/puzzle-images/puzzlePieces.png')}
               style={[styles.puzzlePiece, { zIndex: 2 }]}
@@ -151,7 +151,7 @@ export default function PuzzleJohn() {
                 test(); // Toggle piece visibility
                 setCompletionPic(false); // Hide the completion image
                 if(puzzleComplete==true){
-                  {setMyArrow(true);}
+                  setMyArrow(true);
                 }
               }}
             />
