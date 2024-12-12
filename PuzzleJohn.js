@@ -1,22 +1,19 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Image, ImageBackground, TouchableOpacity, Button, PanResponder, Dimensions } from 'react-native';
-import ThreeONine from './App'
+import { StyleSheet, View, Image, ImageBackground, TouchableOpacity, Button, PanResponder } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 
 export default function PuzzleJohn() {
+  const navigation = useNavigation(); // Initialize navigation
   const [pieceVisible, setPieceVisible] = useState(true);
-  const [puzzleComplete,setPuzzleComplete] = useState(false);
+  const [puzzleComplete, setPuzzleComplete] = useState(false);
   const [showCompletion, setCompletionPic] = useState(false);
-  const [arrow,setMyArrow] = useState(false);
- 
-  const isPuzzleComplete = () => {
-    return piecesState.every(piece => piece.isSnapped);
-  };
+  const [arrow, setMyArrow] = useState(false);
 
   const pieces = [
-    { name: 'JohnTopLeft', position: { x: 300, y: 350 }, target: { x: 1.5, y: 4 }, isSnapped: false  },
-    { name: 'JohnTopCenter', position: { x: 200, y: 300 }, target: { x: 151, y: 3.5 }, isSnapped: false  },
-    { name: 'JohnTopRight', position: { x: 10, y: 200 }, target: { x: 241, y: 0 }, isSnapped: false  },
+    { name: 'JohnTopLeft', position: { x: 300, y: 350 }, target: { x: 1.5, y: 4 }, isSnapped: false },
+    { name: 'JohnTopCenter', position: { x: 200, y: 300 }, target: { x: 151, y: 3.5 }, isSnapped: false },
+    { name: 'JohnTopRight', position: { x: 10, y: 200 }, target: { x: 241, y: 0 }, isSnapped: false },
     { name: 'JohnMiddleLeft', position: { x: 300, y: -200 }, target: { x: 1.3, y: 104 }, isSnapped: false },
     { name: 'JohnCenter', position: { x: 30, y: 320 }, target: { x: 98, y: 148 }, isSnapped: false },
     { name: 'JohnMiddleRight', position: { x: 0, y: 0 }, target: { x: 294, y: 107 }, isSnapped: false },
@@ -41,6 +38,10 @@ export default function PuzzleJohn() {
 
   const [piecesState, setPieces] = useState(pieces);
 
+  const isPuzzleComplete = () => {
+    return piecesState.every(piece => piece.isSnapped);
+  };
+
   const createPanResponder = (index) => {
     return PanResponder.create({
       onStartShouldSetPanResponder: () => !piecesState[index].isSnapped,
@@ -58,27 +59,21 @@ export default function PuzzleJohn() {
           const piece = updatedPieces[index];
           const target = piece.target;
 
-          // Calculate the distance
-          if (target) { // Check if target is defined
-            // Calculate the distance
+          if (target) {
             const distance = Math.sqrt(
               Math.pow(piece.position.x - target.x, 2) +
               Math.pow(piece.position.y - target.y, 2)
             );
 
-            const threshold = 20; // Define how close to snap (in pixels)
+            const threshold = 20;
 
-            // Snap to target if within threshold
             if (distance < threshold) {
-              piece.position = { x: target.x, y: target.y }; // Snap to target position
+              piece.position = { x: target.x, y: target.y };
               piece.isSnapped = true;
             }
           } else {
             console.warn(`Target for piece ${piece.name} is not defined.`);
           }
-
-          // Log the position after dragging
-          console.log(`${piece.name} position after drag:`, piece.position);
 
           if (isPuzzleComplete()) {
             setPuzzleComplete(true);
@@ -91,13 +86,6 @@ export default function PuzzleJohn() {
     });
   };
 
-  const test = () => {
-    setPieceVisible(!pieceVisible);
-    console.log("Piece visibility changed:", !pieceVisible);
-  };
-
-  const puzzleBorder = require('./assets/puzzle-images/JohnPuzzleBorder.png');
-
   return (
     <ImageBackground
       source={require('./assets/puzzle-images/greatwallJohn.png')}
@@ -105,9 +93,9 @@ export default function PuzzleJohn() {
       resizeMode="stretch"
     >
       <View style={styles.innerContainer}>
-        {pieceVisible &&  !arrow && (
-          <TouchableOpacity onPress={test}>
-            <Image 
+        {pieceVisible && !arrow && (
+          <TouchableOpacity onPress={() => setPieceVisible(!pieceVisible)}>
+            <Image
               source={require('./assets/puzzle-images/puzzlePieces.png')}
               style={[styles.puzzlePiece, { zIndex: 2 }]}
             />
@@ -117,48 +105,47 @@ export default function PuzzleJohn() {
         {arrow && (
           <TouchableOpacity>
             <Image
-            source = {require('./assets/puzzle-images/arrowRight.png')}
-            style = {styles.arrowRight}
-            />            
+              source={require('./assets/puzzle-images/arrowRight.png')}
+              style={styles.arrowRight}
+            />
           </TouchableOpacity>
         )}
 
-        {!pieceVisible && !arrow &&(
+        {!pieceVisible && !arrow && (
           <View>
-            <Image source={puzzleBorder} />
-            
+            <Image source={require('./assets/puzzle-images/JohnPuzzleBorder.png')} />
+
             {piecesState
-            .sort((a, b) => (b.isSnapped ? 1 : 0) - (a.isSnapped ? 1 : 0))
-            .map((piece, index) => (
-              <Image 
-              key={piece.name}
-              source={imageMap[piece.name]}
-              style={[{ position: 'absolute', top: piece.position.y, left: piece.position.x, zIndex: piece.isSnapped ? 0 : 1 }]}
-              {...createPanResponder(index).panHandlers}
-              />
-            ))}
+              .sort((a, b) => (b.isSnapped ? 1 : 0) - (a.isSnapped ? 1 : 0))
+              .map((piece, index) => (
+                <Image
+                  key={piece.name}
+                  source={imageMap[piece.name]}
+                  style={[{ position: 'absolute', top: piece.position.y, left: piece.position.x, zIndex: piece.isSnapped ? 0 : 1 }]}
+                  {...createPanResponder(index).panHandlers}
+                />
+              ))}
 
             {showCompletion && (
-              <Image 
+              <Image
                 source={completionImage}
-                style={styles.completionImage} // Define styles for this image
+                style={styles.completionImage}
               />
             )}
 
             <Button
               title="Close Puzzle"
               onPress={() => {
-                test(); // Toggle piece visibility
-                setCompletionPic(false); // Hide the completion image
-                if(puzzleComplete==true){
-                  {setMyArrow(true);}
+                setPieceVisible(true);
+                setCompletionPic(false);
+                if (puzzleComplete) {
+                  setMyArrow(true);
                 }
+                navigation.goBack(); // Navigate back to the previous screen
               }}
             />
           </View>
         )}
-
-       
       </View>
       <StatusBar style="auto" />
     </ImageBackground>
@@ -179,16 +166,15 @@ const styles = StyleSheet.create({
     left: 175,
   },
   completionImage: {
-    width: 845, // Set the width according to your requirement
-    height: 740, // Set the height according to your requirement
+    width: 845,
+    height: 740,
     position: 'absolute',
-     top: -20, // Adjust as needed
-    // left: 50, // Adjust as needed
-    zIndex: 3, // Make sure it's on top of other components
+    top: -20,
+    zIndex: 3,
   },
   arrowRight: {
     left: 180,
     width: 30,
-    height: 30
-  }
+    height: 30,
+  },
 });
