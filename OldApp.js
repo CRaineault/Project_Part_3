@@ -2,16 +2,12 @@ import React, {useState, useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image, Dimensions } from 'react-native';
-import GameScreen from './GameScreen';
-import InstructionsScreen from './InstructionsScreen';
-import HomeScreen from './HomeScreen';  
 import { Audio } from 'expo-av';
 import { StatusBar } from 'expo-status-bar';
 import PuzzleJohn from './PuzzleJohn';
 
-const { width, height } = Dimensions.get('window');
 const Stack = createNativeStackNavigator();
-
+const {width, height} = Dimensions.get('window');
 
 const Elevator = ({navigation}) => {
     return (
@@ -489,12 +485,9 @@ const App = () => {
     return(
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName="HomeScreen" // This defines the first screen to load
-                screenOptions={{ headerShown: false }} // Hide headers for all screens
+        initialRouteName="Elevator"
+        screenOptions={{headerShown: false}}
       >
-	    <Stack.Screen name="HomeScreen" component={HomeScreen} />
-            <Stack.Screen name="GameScreen" component={GameScreen} />
-            <Stack.Screen name="InstructionsScreen" component={InstructionsScreen} />
             <Stack.Screen name="Elevator" component = {Elevator}></Stack.Screen>
             <Stack.Screen name="West_3R_Out" component = {West_3R_Out}></Stack.Screen>
             <Stack.Screen name="TL_TR_1" component = {TL_TR_1}></Stack.Screen>
