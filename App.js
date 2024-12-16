@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image, Dimensions, Button, TextInput, Alert} from 'react-native';
+import Leaderboard from 'react-native-leaderboard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import GameScreen from './GameScreen';
 import InstructionsScreen from './InstructionsScreen';
 import HomeScreen from './HomeScreen';  
@@ -11,12 +13,50 @@ import PuzzleJohn from './PuzzleJohn';
 import TVPuzzle from './TVPuzzle';
 import ComputerGame from './ComputerGame';
 import DougBathroom from './DougBathroom';
+import { useTimer } from './TimerContext';
+import { TimerProvider } from './TimerContext';
+
 
 const { width, height } = Dimensions.get('window');
 const Stack = createNativeStackNavigator();
 
+let dummyLeaderboardData = [
+    {name: "Vitale", score: 4348854},
+    {name: "Lukas", score: 4333598},
+    {name: "Grace", score: 4323456},
+    {name: "Ari", score: 4323455},
+    {name: "Alan", score: 4323454},
+    {name: "Esther", score: 4323453},
+    {name: "Adam", score: 4323452},
+    {name: "Amalie", score: 4323451},
+    {name: "Jacob", score: 4323450},
+    {name: "Cassie", score: 4323503},
+]
+
+// async storage functions for the leaderboard screen
+const saveLeaderboard = async (leaderboardData) => {
+    AsyncStorage.setItem("leaderboard", leaderboardData);
+}
+
+const loadLeaderboard = async () => {
+    try {
+      const data = await AsyncStorage.getItem('leaderboard');
+      return data ? JSON.parse(data) : null;
+    } catch (error) {
+      console.error('Failed to load leaderboard:', error);
+      return null;
+    }
+  };
 
 const Elevator = ({navigation}) => {
+
+    const { startTimer} = useTimer();
+
+    // start timer as soon as you're on the elevator screen
+    useEffect(() => {
+      startTimer()
+    })
+
     return (
             <ImageBackground
                 source = {require('./assets/elevator.jpg')}
@@ -209,6 +249,14 @@ const TL_TR_1 = ({navigation}) => {
                 </Image>
                 
                 </TouchableOpacity>
+                <TouchableOpacity>
+                <Button style={styles.leaderboardButton} 
+                 onPress={() => {
+                    console.log("Navigating to Leaderboard"); // Debugging log
+                    navigation.navigate('Leaderboard');
+        }}
+                title='Psst, click here to win'></Button>
+            </TouchableOpacity>
                 
         </ImageBackground>
     )
@@ -492,8 +540,104 @@ const ThreeONinePuzzle = ({navigation}) => {
     )
 }
 
+const LeaderboardScreen = ({navigation}) => {
+
+
+    // start leaderboard as null, we want to try to get it from storage first
+    const [leaderboardData, setLeaderboardData] = useState(null);
+    const { pauseTimer, elapsedTime, resetTimer } = useTimer();
+    
+    const [submitted, setSubmitted] = useState(false);
+    
+    useEffect(() => {
+        // pause timer to calculate score as soon as you load into the leaderboard
+        pauseTimer();
+        const fetchLeaderboard = async () => {
+          const leaderboard = await loadLeaderboard();
+          if (leaderboard) {
+            setLeaderboardData(leaderboard); // Set leaderboard if it exists
+          } else {
+            setLeaderboardData(dummyLeaderboardData); // Default to dummy data
+            console.log("Couldn't load leaderboard for some reason :(")
+          }
+        };
+    
+        fetchLeaderboard(); // Call the function
+      }, []); // Empty dependency array, we only want to load from memory when first opening the screen
+    
+    
+    const updateLeaderboard = (name, score) => {
+        var newDs = [];
+        newDs = leaderboardData.slice();
+        // try to find a duplicate score if it exists, if there is none, only then send the new score
+        if (submitted === false){
+            newDs.push({ name: name, score: score });
+            Alert.alert("Score submitted!")
+            setSubmitted(true);
+        }
+        // if a dupe is found, alert the user
+        else {
+            Alert.alert("Your score is already submitted.")
+        }
+        setLeaderboardData(newDs);
+        saveLeaderboard(JSON.stringify(newDs));
+      };
+        const [name, setName] = useState(''); // State variable to store the name entered by the user
+    
+        const [score, setScore] = useState(0);
+    
+        // Generate score, default is 5,000,000 and we subtract the number of secs it took to get to the results
+        const generateScore = () => {
+          return 5000000 - elapsedTime;
+        };
+      
+        // Generate the score whenever the screen is accessed
+        useEffect(() => {
+          setScore(generateScore());
+          resetTimer(); // reset the timer so if the user tries to start over, their timer will be refreshed too
+        }, []);
+        return (
+            <View style={styles.container}>
+                <Text style={{color: 'white', fontSize: 30, marginBottom: 20, padding:30}}>Leaderboard</Text>
+                <Leaderboard 
+            data={leaderboardData} 
+            sortBy='score' 
+            labelBy='name'
+            // this leaderboard component is usually white w/ black text, customize it to black w/ white text
+            rankStyle={{color: "white"}} 
+            labelStyle={{color: "white"}}
+            scoreStyle={{color: "white"}}
+            evenRowColor="#0f0e0e"
+            oddRowColor="#1f1d1d"
+            ></Leaderboard>
+          <Text style={styles.scoreText}>Your score: {score}</Text>
+    
+          <TextInput
+            style={styles.input}
+            placeholder="Enter name"
+            placeholderTextColor={'white'}
+            onChangeText={(text) => setName(text)}
+          />
+    
+          <Button
+            title="Submit"
+            color="#c23127"
+            onPress={() => updateLeaderboard(name, score)}
+          />
+
+         <Button
+            title="Back to Menu"
+            color="#c23127"
+            onPress={() => navigation.navigate('HomeScreen')}
+          />
+                </View>
+                
+        )
+    }
+
 const App = () => {
     return(
+        <TimerProvider>
         <NavigationContainer>
             <Stack.Navigator
                 initialRouteName="HomeScreen" // This defines the first screen to load
@@ -515,8 +659,10 @@ const App = () => {
             <Stack.Screen name="TVPuzzle" component = {TVPuzzle}></Stack.Screen>
             <Stack.Screen name="ComputerGame" component = {ComputerGame}></Stack.Screen>
             <Stack.Screen name="DougBathroom" component = {DougBathroom}></Stack.Screen>
+            <Stack.Screen name="Leaderboard" component = {LeaderboardScreen}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
+        </TimerProvider>
     )
 }
 
@@ -599,7 +745,32 @@ const styles = StyleSheet.create({
         width: width * 0.09,
         height: height * 0.04,
         position: 'absolute'
-    }
+    },
+    leaderboardButton: {
+        // I don't think this actually does anything but I'm leaving it here just in case
+        position: 'absolute', 
+        top: 0, 
+        left: 0, 
+        margin: 10, 
+        backgroundColor: 'lightgray', 
+        padding: 10, 
+        },
+        scoreText: {
+            color: 'white',
+            fontSize: 20,
+            marginBottom: 20, 
+            marginTop: 20
+          },
+          input: {
+            height: 50, 
+            backgroundColor: '#1c1a1a',
+            textShadowColor: 'white',
+            color: 'white',
+            padding: 10,
+            marginBottom: 20, 
+            width: '50%', 
+            borderRadius: 8, 
+          },
     })
     
 
