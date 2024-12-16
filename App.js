@@ -8,6 +8,9 @@ import HomeScreen from './HomeScreen';
 import { Audio } from 'expo-av';
 import { StatusBar } from 'expo-status-bar';
 import PuzzleJohn from './PuzzleJohn';
+import TVPuzzle from './TVPuzzle';
+import ComputerGame from './ComputerGame';
+import DougBathroom from './DougBathroom';
 
 const { width, height } = Dimensions.get('window');
 const Stack = createNativeStackNavigator();
@@ -232,8 +235,8 @@ const TR_North = ({navigation}) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
-                        console.log("Navigating to ThreeTen"); // Debugging log
-                        navigation.navigate('ThreeTen');
+                        console.log("Navigating to ComputerGame"); // Debugging log
+                        navigation.navigate('ComputerGame');
             }}>
                 <Image
                 source = {require('./assets/green_navigation_arrow.png')}
@@ -281,6 +284,25 @@ const TR_North = ({navigation}) => {
                 </Image>
                 
                 </TouchableOpacity>
+
+                <TouchableOpacity
+                    onPress={() => {
+                        console.log("Navigating to DougBathroom"); // Debugging log
+                        navigation.navigate('DougBathroom');
+            }}>
+                
+                <Image
+                source = {require('./assets/green_navigation_arrow.png')}
+                style={[styles.arrow, {
+                    transform: [{ rotate: '270deg' }, { rotateY: '60deg'}],
+                    top: height * .35,
+                    left: width * -.1,
+                    width: width * 0.2,
+                    height: height * 0.1,
+                }]}>
+                </Image>
+                
+                </TouchableOpacity>
                 
         </ImageBackground>
     )
@@ -319,7 +341,7 @@ const ThreeBathroom = ({navigation}) => {
                 <TouchableOpacity
                     onPress={() => {
                         console.log("Navigating to ThreeThreeBack"); // Debugging log
-                        navigation.navigate('ThreeThreeBack');
+                        navigation.navigate('TR_North');
             }}>
                 
                 <Image
@@ -378,8 +400,8 @@ const ThreeONine = ({navigation}) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
-                        console.log("Navigating to ThreeONinePuzzle"); // Debugging log
-                        navigation.navigate('ThreeONinePuzzle');
+                        console.log("Navigating to TVPuzzle"); // Debugging log
+                        navigation.navigate('TVPuzzle');
             }}>
                 
                 <Image
@@ -440,21 +462,6 @@ const ThreeTen = ({navigation}) => {
                 </Image>
                 
                 </TouchableOpacity>
-
-                <TouchableOpacity>
-                
-                <Image
-                source = {require('./assets/Rocket_J._Squirrel.png')}
-                style={[styles.arrow, {
-                    transform: [{ rotate: '0deg' }, {rotateX: '0deg'}, {rotateY: '0deg'}],
-                    top: height * -.13,
-                    left: width * .15,
-                    width: width * 0.15,
-                    height: height * 0.1,
-                }]}>
-                </Image>
-                
-                </TouchableOpacity>
         </ImageBackground>
     )
 }
@@ -505,6 +512,9 @@ const App = () => {
             <Stack.Screen name="ThreeONinePuzzle" component = {ThreeONinePuzzle}></Stack.Screen>
             <Stack.Screen name="ThreeTen" component = {ThreeTen}></Stack.Screen>
             <Stack.Screen name="PuzzleJohn" component = {PuzzleJohn}></Stack.Screen>
+            <Stack.Screen name="TVPuzzle" component = {TVPuzzle}></Stack.Screen>
+            <Stack.Screen name="ComputerGame" component = {ComputerGame}></Stack.Screen>
+            <Stack.Screen name="DougBathroom" component = {DougBathroom}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
     )
